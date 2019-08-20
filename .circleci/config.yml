@@ -45,7 +45,7 @@ references:
       name: Download Ruby Dependencies
       command: |
         gem update --system
-        gem uninstall bundler
+        gem uninstall bundler -y
         gem install bundler
         bundle install
         bundle update --bundler
