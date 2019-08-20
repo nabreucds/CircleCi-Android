@@ -91,9 +91,6 @@ jobs:
       - *save_gradle_cache
       - *save_gems_cache
       - run:
-          name: Install bundle for fastlane
-          command: sudo bundle install
-      - run:
           name: Fastlane upload build to Appcenter
           command: sudo fastlane upload_build_to_appcenter
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
