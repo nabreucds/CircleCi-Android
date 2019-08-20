@@ -62,11 +62,8 @@ jobs:
     steps:
       - checkout
       - *restore_gradle_cache
-      - *restore_gems_cache
-      - *ruby_dependencies
       - *android_dependencies
       - *save_gradle_cache
-      - *save_gems_cache
       - run:
           name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
           command: sudo chmod +x ./gradlew
