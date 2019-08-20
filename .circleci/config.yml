@@ -47,8 +47,6 @@ references:
         gem update --system
         gem uninstall -aIx bundler
         gem install bundler
-        bundle install
-        bundle update --bundler
         bundle check
         bundle install --path vendor/bundle
 
