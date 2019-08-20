@@ -40,6 +40,5 @@ lane :upload_build_to_appcenter do
       message: "Build uploaded to Appcenter",
       success: true,
       slack_url: "https://hooks.slack.com/services/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",
-      default_payloads: [:git_branch, :last_git_commit_message]
     )
 end
