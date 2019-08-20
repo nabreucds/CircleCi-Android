@@ -104,7 +104,6 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - test_unit
       - deploy_appcenter:
           requires:
             - test_unit
