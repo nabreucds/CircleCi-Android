@@ -2,4 +2,3 @@ local.properties
 .idea/
 .gradle/
 *.iml
-Gemfile.lock
