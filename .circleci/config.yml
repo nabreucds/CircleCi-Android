@@ -1,7 +1,7 @@
 version: 2
 references:
   ## Workspaces
-  workspace: &workspace ~/code
+  workspace: &workspace ~/app
 
   ## Docker image configurations
   android_config: &android_config
