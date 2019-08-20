@@ -69,9 +69,6 @@ jobs:
           name: Run Tests
           #          command: ./gradlew lint test
           command: ./gradlew test
-      - run:
-          name: Fastlane upload build to Appcenter
-          command: bundle exec fastlane upload_build_to_appcenter
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
@@ -92,7 +89,7 @@ jobs:
       - *save_gems_cache
       - run:
           name: Fastlane upload build to Appcenter
-          command: sudo fastlane upload_build_to_appcenter
+          command: bundle exec fastlane upload_build_to_appcenter
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
@@ -104,6 +101,7 @@ workflows:
   version: 2
   workflow:
     jobs:
+      - test_unit
       - deploy_appcenter:
           requires:
             - test_unit
