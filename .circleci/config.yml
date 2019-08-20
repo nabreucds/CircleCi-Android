@@ -9,6 +9,7 @@ references:
     docker:
       - image: circleci/android:api-28-alpha
     environment:
+      BUNDLER_VERSION: 2.0.1
       TERM: dumb
       _JAVA_OPTIONS: "-Xmx3200m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3200m"'
