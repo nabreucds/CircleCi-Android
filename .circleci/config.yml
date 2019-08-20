@@ -44,7 +44,7 @@ references:
     run:
       name: Download Ruby Dependencies
       command: |
-        gem uninstall bundler
+        gem uninstall -aIx bundler
         gem install bundler
         bundle install
         bundle update --bundler
