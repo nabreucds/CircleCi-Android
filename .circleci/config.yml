@@ -43,7 +43,12 @@ references:
   ruby_dependencies: &ruby_dependencies
     run:
       name: Download Ruby Dependencies
-      command: gem update --system || bundle update --bundler || bundle check || bundle install --path vendor/bundle
+      command: |
+        gem update --system
+        gem install bundler
+        bundle update --bundler
+        bundle check
+        bundle install --path vendor/bundle
 
   android_dependencies: &android_dependencies
     run:
