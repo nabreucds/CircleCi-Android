@@ -36,7 +36,6 @@ lane :upload_build_to_appcenter do
         app_platform: 'Java',
         apk: "./app/build/outputs/apk/debug/app-debug.apk",
         destinations: ENV["APPCENTER_DISTRIBUTE_GROUP"],
-        destination_type: "group",
         notify_testers: true
     )
 end
