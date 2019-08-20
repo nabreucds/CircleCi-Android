@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: gradle" time="37.802802">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: appcenter_upload" time="29.641612">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

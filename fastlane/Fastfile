@@ -1,0 +1,40 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+# load variables from .env file in the root if it exists
+if File.exist?('../.env')
+  open('../.env', 'r').readlines.each do |l|
+    kv = l.split('=')
+    ENV[kv[0]] = kv[1].chomp
+  end
+end
+
+lane :upload_build_to_appcenter do
+    gradle(
+        task: 'assemble',
+        build_type: 'debug'
+      )
+
+    # app should be autocreated if not found
+    appcenter_upload(
+        api_token: ENV["APPCENTER_API_TOKEN"],
+        owner_name: ENV["APPCENTER_OWNER_NAME"],
+        app_name: "FastlaneSampleApp",
+        app_os: 'Android',
+        app_platform: 'Java',
+        apk: "./app/build/outputs/apk/debug/app-debug.apk",
+        notify_testers: true
+    )
+end
