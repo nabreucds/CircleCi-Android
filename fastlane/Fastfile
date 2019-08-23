@@ -50,6 +50,9 @@ lane :build_and_distribute do
         flavor: flavor_from_branch
     )
 
+    puts build_type_from_branch
+    puts flavor_from_branch
+
     #upload_to_appcenter
 
     slack(
