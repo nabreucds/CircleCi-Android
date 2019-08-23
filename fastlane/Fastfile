@@ -42,3 +42,92 @@ lane :upload_build_to_appcenter do
       slack_url: "https://hooks.slack.com/services/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",
     )
 end
+
+lane :build_and_distribute do
+    gradle(
+        task: 'assemble',
+        build_type: build_type_from_branch,
+        flavor: flavor_from_branch
+    )
+
+    #upload_to_appcenter
+
+    slack(
+        pretext: 'A new build was successfully uploaded to AppCenter 🚀',
+        default_payloads: [:git_branch, :last_git_commit, :git_author]
+    )
+end
+
+error do |lane, exception|
+    slack(
+        message: 'There was an error running the following lane: #{lane}\nError message: #{exception.message}'
+    )
+end
+
+# Private lanes
+
+private_lane :upload_to_appcenter do
+    appcenter_upload(
+            app_name: app_name,
+            app_os: 'Android',
+            app_platform: 'Java',
+            apk: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
+            destinations: distribution_group,
+            destination_type: 'group',
+            notify_testers: true,
+            mandatory_update: true
+    )
+end
+
+private_lane :app_name do
+    name = ''
+
+    case lane_context[SharedValues::GRADLE_FLAVOR]
+    when 'att'
+        name = name + 'ATT'
+    when 'golfbook'
+        name = name + 'Golf-Book'
+    else
+        name = name + 'Supreme-Golf'
+    end
+
+    if lane_context[SharedValues::GRADLE_BUILD_TYPE] == 'release'
+        name = name + '-Release-Candidate'
+    else
+        name = name + '-Stage'
+    end
+
+    name
+end
+
+private_lane :distribution_group do
+    if lane_context[SharedValues::GRADLE_BUILD_TYPE] == 'release'
+        ENV["APPCENTER_RELEASE_DISTRIBUTION_GROUP"]
+    else
+        ENV["APPCENTER_STAGE_DISTRIBUTION_GROUP"]
+    end
+end
+
+private_lane :flavor_from_branch do
+    current_branch = git_branch | 'stage'
+    
+    branch_tokens = current_branch.split('_')
+    case branch_tokens[0]
+    when 'att'
+        'att'
+    when 'golfbook'
+        'golfbook'
+    else
+        'supremegolf'
+    end
+end
+
+private_lane :build_type_from_branch do
+    current_branch = git_branch | 'stage'
+    
+    if current_branch.end_with?('release_candidate')
+        'release'
+    else
+        'stageRelease'
+    end
+end
