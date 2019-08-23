@@ -68,7 +68,7 @@ jobs:
           name: Run Tests
           #          command: ./gradlew lint test
           command: ./gradlew test
-      - run: echo CIRCLE_BRANCH
+      - run: echo $CIRCLE_BRANCH
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
