@@ -36,10 +36,6 @@ lane :upload_build_to_appcenter do
         notify_testers: true
     )
 
-    add_git_tag(
-        tag: "v#{lane_context[SharedValues::VERSION_NUMBER]}"
-    )
-
     slack(
       message: "Build uploaded to Appcenter",
       success: true,
