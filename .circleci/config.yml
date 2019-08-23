@@ -2,7 +2,7 @@ version: 2
 references:
   ## Workspaces
   workspace: &workspace ~/src
-
+​
   ## Docker image configurations
   android_config: &android_config
     working_directory: *workspace
@@ -12,33 +12,33 @@ references:
       TERM: dumb
       _JAVA_OPTIONS: "-Xmx3200m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3200m"'
-
+​
   ## Cache
   gradle_key: &gradle_key jars-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
-
+​
   gems_key: &gems_key gems-{{ checksum "Gemfile.lock" }}
-
+​
   restore_gradle_cache: &restore_gradle_cache
     restore_cache:
       key: *gradle_key
-
+​
   restore_gems_cache: &restore_gems_cache
     restore_cache:
       key: *gems_key
-
+​
   save_gradle_cache: &save_gradle_cache
     save_cache:
       key: *gradle_key
       paths:
         - ~/.gradle
         - ~/.m2
-
+​
   save_gems_cache: &save_gems_cache
     save_cache:
       key: *gems_key
       paths:
         - vendor/bundle
-
+​
   ## Dependencies
   ruby_dependencies: &ruby_dependencies
     run:
@@ -46,57 +46,13 @@ references:
       command: |
         gem install bundler --version 2.0.2
         bundle install --path vendor/bundle
-
+​
   android_dependencies: &android_dependencies
     run:
       name: Download Android Dependencies
       command: ./gradlew androidDependencies
-
+​
 jobs:
-  #Run the test
-  test_unit:
-    <<: *android_config
-    steps:
-      - checkout
-      - *restore_gradle_cache
-      - *android_dependencies
-      - *save_gradle_cache
-      - run:
-          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-          command: sudo chmod +x ./gradlew
-      - run:
-          name: Run Tests
-          #          command: ./gradlew lint test
-          command: ./gradlew test
-      - run: echo $CIRCLE_BRANCH
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: app/build/reports
-          destination: reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: app/build/test-results
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
-
-  #Deploy to appcenter
-  deploy_appcenter:
-    <<: *android_config
-    steps:
-      - checkout
-      - *restore_gradle_cache
-      - *restore_gems_cache
-      - *ruby_dependencies
-      - *android_dependencies
-      - *save_gradle_cache
-      - *save_gems_cache
-      - run:
-          name: Fastlane upload build to Appcenter
-          command: bundle exec fastlane upload_build_to_appcenter
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: app/build/reports
-          destination: reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: app/build/test-results
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
-
   build_and_distribute:
     <<: *android_config
     steps:
@@ -110,18 +66,17 @@ jobs:
       - run:
           name: Generate a new build an distribute it
           command: bundle exec fastlane build_and_distribute
-
+​
 workflows:
   version: 2
   workflow:
     jobs:
       - build_and_distribute:
-          filters:
-            branches:
-              only:
-                - stage
-                - release_candidate
-                - att_stage
-                - att_release_candidate
-                - golfbook_stage
-                - golfbook_release_candidate
+          branches:
+            only:
+              - stage
+              - release_candidate
+              - att_stage
+              - att_release_candidate
+              - golfbook_stage
+              - golfbook_release_candidate
