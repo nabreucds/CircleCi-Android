@@ -39,6 +39,19 @@ references:
       paths:
         - vendor/bundle
 
+  ## Dependencies
+  ruby_dependencies: &ruby_dependencies
+    run:
+      name: Download Ruby Dependencies
+      command: |
+        gem install bundler --version 2.0.2
+        bundle install --path vendor/bundle
+​
+  android_dependencies: &android_dependencies
+    run:
+      name: Download Android Dependencies
+      command: ./gradlew androidDependencies
+
   build_and_distribute:
     <<: *android_config
     steps:
