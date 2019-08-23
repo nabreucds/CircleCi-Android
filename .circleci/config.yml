@@ -109,7 +109,7 @@ jobs:
       - *save_gems_cache
       - run:
           name: Generate a new build an distribute it
-          command: bundle exec fastlane build_and_distribute build_type:<<parameters.build_type>> flavor:<<parameters.flavor>>
+          command: bundle exec fastlane build_and_distribute
 
 workflows:
   version: 2
