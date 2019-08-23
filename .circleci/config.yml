@@ -53,50 +53,6 @@ references:
       command: ./gradlew androidDependencies
 
 jobs:
-  #Run the test
-  test_unit:
-    <<: *android_config
-    steps:
-      - checkout
-      - *restore_gradle_cache
-      - *android_dependencies
-      - *save_gradle_cache
-      - run:
-          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-          command: sudo chmod +x ./gradlew
-      - run:
-          name: Run Tests
-          #          command: ./gradlew lint test
-          command: ./gradlew test
-      - run: echo $CIRCLE_BRANCH
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: app/build/reports
-          destination: reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: app/build/test-results
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
-
-  #Deploy to appcenter
-  deploy_appcenter:
-    <<: *android_config
-    steps:
-      - checkout
-      - *restore_gradle_cache
-      - *restore_gems_cache
-      - *ruby_dependencies
-      - *android_dependencies
-      - *save_gradle_cache
-      - *save_gems_cache
-      - run:
-          name: Fastlane upload build to Appcenter
-          command: bundle exec fastlane upload_build_to_appcenter
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: app/build/reports
-          destination: reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: app/build/test-results
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
-  jobs:
   build_and_distribute:
     <<: *android_config
     steps:
@@ -109,7 +65,7 @@ jobs:
       - *save_gems_cache
       - run:
           name: Generate a new build an distribute it
-          command: bundle exec fastlane build_and_distribute build_type:<<parameters.build_type>> flavor:<<parameters.flavor>>
+          command: bundle exec fastlane build_and_distribute
 
 workflows:
   version: 2
