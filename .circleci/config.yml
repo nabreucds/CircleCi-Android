@@ -109,7 +109,7 @@ jobs:
       - *save_gems_cache
       - run:
           name: Generate a new build an distribute it
-          command: bundle exec fastlane build_and_distribute build_type:<<parameters.build_type>> flavor:<<parameters.flavor>>    
+          command: bundle exec fastlane build_and_distribute build_type:<<parameters.build_type>> flavor:<<parameters.flavor>>
 
 workflows:
   version: 2
@@ -119,7 +119,6 @@ workflows:
       - deploy_appcenter:
           requires:
             - test_unit
-    jobs:
       - build_and_distribute:
           filters:
             branches:
@@ -129,4 +128,4 @@ workflows:
                 - att_stage
                 - att_release_candidate
                 - golfbook_stage
-                - golfbook_release_candidate        
+                - golfbook_release_candidate
