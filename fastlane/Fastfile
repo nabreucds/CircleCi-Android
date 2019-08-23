@@ -112,9 +112,7 @@ private_lane :distribution_group do
 end
 
 private_lane :flavor_from_branch do
-    current_branch = git_branch | 'stage'
-    
-    branch_tokens = current_branch.split('_')
+    branch_tokens = git_branch.split('_')
     case branch_tokens[0]
     when 'att'
         'att'
@@ -126,9 +124,7 @@ private_lane :flavor_from_branch do
 end
 
 private_lane :build_type_from_branch do
-    current_branch = git_branch | 'stage'
-    
-    if current_branch.end_with?('release_candidate')
+    if git_branch.end_with?('release_candidate')
         'release'
     else
         'stageRelease'
