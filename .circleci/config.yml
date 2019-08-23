@@ -2,7 +2,6 @@ version: 2
 references:
   ## Workspaces
   workspace: &workspace ~/src
-  BUNDLER_VERSION: 2.0.2
 
   ## Docker image configurations
   android_config: &android_config
@@ -45,7 +44,7 @@ references:
     run:
       name: Download Ruby Dependencies
       command: |
-        gem install bundler --version $BUNDLER_VERSION
+        gem install bundler --version 2.0.2
         bundle install --path vendor/bundle
 
   android_dependencies: &android_dependencies
