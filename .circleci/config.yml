@@ -71,13 +71,4 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - build_and_distribute:
-          filters:
-            branches:
-              only:
-                - stage
-                - release_candidate
-                - att_stage
-                - att_release_candidate
-                - golfbook_stage
-                - golfbook_release_candidate
+      - build_and_distribute
